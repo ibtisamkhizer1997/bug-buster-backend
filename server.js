@@ -75,7 +75,7 @@ mongoose
 
 app.get("/", (req, res) => {
   console.log(process.env.Environment);
-  res.send(`API is running... - ${process.env.Environment ? "Env": "Prod"}`);
+  res.send(`API is running... - ${process.env.Environment === "development" ? "Dev": "Prod"}`);
 });
 
 // Routes
