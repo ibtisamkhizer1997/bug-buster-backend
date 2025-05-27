@@ -74,7 +74,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API is running..." + process.env.Environment);
 });
 
 // Routes
