@@ -18,17 +18,24 @@ const app = express();
 app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 
+// Determine the database name based on the environment
+const isDevelopment = process.env.Environment === "development";
+const dbName = isDevelopment ? "bugbuster-testing" : "BugBuster";
+
+console.log(process.env.Environment);
+
+
+// MongoDB connection string
+const mongoUri = `mongodb://nitselcom:nx2twTw9LC8iOQ35@ac-qsom1hu-shard-00-00.yy5blhn.mongodb.net:27017,ac-qsom1hu-shard-00-01.yy5blhn.mongodb.net:27017,ac-qsom1hu-shard-00-02.yy5blhn.mongodb.net:27017/${dbName}?ssl=true&replicaSet=atlas-ypqioy-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0`;
+
 // Connect to MongoDB
 mongoose
-  .connect(
-    "mongodb://nitselcom:nx2twTw9LC8iOQ35@ac-qsom1hu-shard-00-00.yy5blhn.mongodb.net:27017,ac-qsom1hu-shard-00-01.yy5blhn.mongodb.net:27017,ac-qsom1hu-shard-00-02.yy5blhn.mongodb.net:27017/BugBuster?ssl=true&replicaSet=atlas-ypqioy-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(async () => {
-    console.log("Connected to MongoDB");
+    console.log(`Connected to MongoDB (${dbName})`);
 
     // Check if manager@nitsel.com exists
     const existingUser = await User.findOne({ email: "manager@nitsel.com" });
