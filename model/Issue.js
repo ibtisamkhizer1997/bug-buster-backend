@@ -1,5 +1,23 @@
 const mongoose = require('mongoose');
 
+// const commentSchema = new mongoose.Schema({
+//   text: {
+//     type: String,
+//     required: true,
+//     trim: true,
+//     maxlength: 1000,
+//   },
+//   commentedBy: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: 'User',
+//     required: true,
+//   },
+//   commentedAt: {
+//     type: Date,
+//     default: Date.now,
+//   },
+// });
+
 const issueSchema = new mongoose.Schema({
   userName: {
     type: String,
@@ -30,6 +48,8 @@ const issueSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    enum: ['pending', 'in-progress', 'resolved'],
+    default: 'pending',
   },
   priority: {
     type: String,
@@ -53,10 +73,22 @@ const issueSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 5,
-    default: null, 
+    default: null,
   },
+  feedback: {
+    type: String,
+    trim: true,
+    default: '',
+  },
+  comments: { 
+    type: String,
+    default: '',
+    maxlength: 5000, // Adjust as needed
+  },
+}, { 
+  timestamps: true 
 });
 
 module.exports = mongoose.model('Issue', issueSchema);
